@@ -16,6 +16,7 @@ test.describe("Ir a freeRangeTesters", () => {
     for (const seccion of secciones) {
         await test.step(`Validar redirección a la sección "${seccion.nombre}"`, async () => {
             await page.goto('https://www.freerangetesters.com');
+            await expect(page).toHaveTitle('Free Range Testers');
         })
 
         await test.step(`Cuando hago click en "${seccion.nombre}"`, async () => {

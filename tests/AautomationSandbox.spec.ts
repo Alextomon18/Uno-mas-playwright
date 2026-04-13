@@ -24,7 +24,9 @@ test.describe("Acciones en la página", () => {
         })
 
         await test.step('Puedo ingresar texto en el campo "Un aburrido texto"', async () => {
+            await expect(page.getByPlaceholder('Ingresá texto'), 'El campo de texto no es editable').toBeEditable();
             await page.getByPlaceholder('Ingresá texto').fill(textoDePrueba);
+            await expect(page.getByPlaceholder('Ingresá texto')).toHaveValue(textoDePrueba);
         })
     });
     
@@ -48,6 +50,7 @@ test.describe("Acciones en la página", () => {
         })
         await test.step('Puedo seleccionar el radio button "Opción 2"', async () => {
             await page.getByRole('radio', { name: 'No' }).check();
+            await expect(page.getByRole('radio', { name: 'No' }), 'El radio button no está seleccionado').toBeChecked();
         });
     });
 
@@ -56,7 +59,17 @@ test.describe("Acciones en la página", () => {
             await page.goto("https://thefreerangetester.github.io/sandbox-automation-testing/");
         })
         await test.step('Puedo seleccionar una opción del dropdown', async () => {
+            const deportes = ['Fútbol', 'Tennis', 'Basketball'];
+            for(let opcion of deportes){
+                const elemento = await page.$(`select#formBasicSelect > option:is(:text("${opcion}"))`)
+                if(elemento){
+                    console.log(`La opción ${opcion} existe en el dropdown`);
+                } else {
+                    throw new Error(`La opción ${opcion} NO existe en el dropdown`);
+                }
+            }
             await page.getByLabel('Dropdown').selectOption('Tennis');
+            await expect(page.getByLabel('Dropdown')).toHaveValue('Tennis');
         });
         
     });

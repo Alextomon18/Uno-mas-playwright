@@ -12,7 +12,9 @@ test.describe("Acciones en la página", () => {
         })
 
         await test.step('Puedo dar click en el boton con ID dinamico', async () => {
-           await page.getByRole('button', { name: 'Hacé click para generar un ID' }).click();
+            const boton = page.getByRole('button', { name: 'Hacé click para generar un ID' });
+            await boton.click({force: true});
+            await expect(page.getByText('OMG, aparezco después de 3')).toBeVisible();
         })
     });
 
@@ -31,9 +33,13 @@ test.describe("Acciones en la página", () => {
             await page.goto("https://thefreerangetester.github.io/sandbox-automation-testing/");
         })
             
-        await test.step('Puedo seleccionar el checkbox "Opción 1"', async () => {
+        await test.step('Puedo seleccionar el checkbox "pasta"', async () => {
             await page.getByRole('checkbox', { name: 'Pasta 🍝' }).check();
+            await expect(page.getByRole('checkbox', { name: 'Pasta 🍝' })).toBeChecked();
+            });
+        await test.step('Puedo deseleccionar el checkbox "pasta"', async () => {
             await page.getByRole('checkbox', { name: 'Pasta 🍝' }).uncheck();
+            await expect(page.getByRole('checkbox', { name: 'Pasta 🍝' }), 'El checkbox no está seleccionado').not.toBeChecked();
         });
     });
     test('Validacion de radio buttons', async ({ page }) => {

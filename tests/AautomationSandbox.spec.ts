@@ -94,4 +94,16 @@ test.describe("Acciones en la página", () => {
         });        
         
     });*/
+
+    test("Valdiar tabla estatica", async ({page}) => {
+        await test.step('Dado que navego a la página de sandbox', async () => {
+            await page.goto("https://thefreerangetester.github.io/sandbox-automation-testing/");
+        })
+
+        await test.step('Validar nombres en la tabla', async () => {
+            const valoresColNombre = await page.$$eval('h2:has-text("Tabla estática") + table tbody tr td:nth-child(2)', elements => elements.map(el => el.textContent));
+            const nombresEsperados = ['Messi', 'Ronaldo', 'Mbappe'];
+            expect(valoresColNombre).toEqual(nombresEsperados);
+        })
+    });
 })
